@@ -42,7 +42,7 @@ public class TeamsController : ControllerBase
         _repository.Delete(team);
         await _repository.SaveAsync();
 
-        return NoContent(); // Código 204: Borrado con éxito 
+        return NoContent(); // Código 204: Borrado con éxito
     }
     
 }
