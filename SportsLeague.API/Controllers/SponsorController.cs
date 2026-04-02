@@ -36,6 +36,14 @@ public class SponsorController : ControllerBase
         if (response == null) return NotFound();
         return Ok(response);
     }
+
+    [HttpGet] // LISTAR TODOS
+    public async Task<IActionResult> GetAll()
+    {
+        var sponsors = await _service.GetAllAsync(); // Debes crearlo en el Service
+        return Ok(sponsors);
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

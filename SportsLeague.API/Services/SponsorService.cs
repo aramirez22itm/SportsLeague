@@ -36,12 +36,20 @@ public class SponsorService : ISponsorService
         return _mapper.Map<SponsorResponseDTO>(entity);
     }
 
+    public async Task<IEnumerable<SponsorResponseDTO>> GetAllAsync()
+    {
+        var entities = await _repository.GetAllAsync(); // Usa el método del repositorio genérico
+        return _mapper.Map<IEnumerable<SponsorResponseDTO>>(entities);
+    }
+
     public async Task<bool> DeleteAsync(int id)
     {
         var entity = await _repository.GetByIdAsync(id);
         if (entity == null) return false;
 
-        await _repository.DeleteAsync(entity); // Usa el Delete del GenericRepository
+        _repository.Delete(entity); // Usa el Delete del GenericRepository
+        await _repository.SaveAsync();
+
         return true;
     }
 }

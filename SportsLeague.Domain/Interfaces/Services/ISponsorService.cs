@@ -5,6 +5,7 @@ namespace SportsLeague.Domain.Interfaces.Services;
 
 public interface ISponsorService
 {
+    Task<IEnumerable<SponsorResponseDTO>> GetAllAsync();
     Task<SponsorResponseDTO> CreateAsync(SponsorRequestDTO request);
     Task<SponsorResponseDTO?> GetByIdAsync(int id);
     Task<bool> DeleteAsync(int id);
