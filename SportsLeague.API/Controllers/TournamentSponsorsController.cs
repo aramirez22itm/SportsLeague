@@ -1,14 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsLeague.Domain.DTOs.Request;
+using SportsLeague.Domain.Entities;
+using SportsLeague.Domain.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
 public class TournamentSponsorsController : ControllerBase
 {
-    // Aquí podrías poner el POST para crear la relación N:M
-    [HttpPost]
-    public IActionResult AssignSponsor(TournamentSponsorRequestDTO request)
+    private readonly IGenericRepository<TournamentSponsor> _repository;
+
+    public TournamentSponsorsController(IGenericRepository<TournamentSponsor> repository)
     {
-        return Ok("Vinculación exitosa (Simulada)");
+        _repository = repository;
+    }
+
+    // Actualizar Monto del Contrato (Update)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAmount(int id, decimal newAmount)
+    {
+        var link = await _repository.GetByIdAsync(id);
+        if (link == null) return NotFound();
+
+        link.ContractAmount = newAmount;
+
+        _repository.Update(link); // SIN await porque devuelve void
+        await _repository.SaveAsync(); // CON await para guardar en SQL
+
+        return Ok(link);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteLink(int id)
+    {
+        var link = await _repository.GetByIdAsync(id);
+        if (link == null) return NotFound();
+
+        _repository.Delete(link); // SIN await porque devuelve void
+        await _repository.SaveAsync(); // CON await para guardar en SQL
+
+        return NoContent();
     }
 }

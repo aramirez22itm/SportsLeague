@@ -35,4 +35,13 @@ public class SponsorService : ISponsorService
         var entity = await _repository.GetByIdAsync(id);
         return _mapper.Map<SponsorResponseDTO>(entity);
     }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity == null) return false;
+
+        await _repository.DeleteAsync(entity); // Usa el Delete del GenericRepository
+        return true;
+    }
 }

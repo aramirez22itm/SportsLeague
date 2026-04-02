@@ -36,4 +36,11 @@ public class SponsorController : ControllerBase
         if (response == null) return NotFound();
         return Ok(response);
     }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var deleted = await _service.DeleteAsync(id);
+        if (!deleted) return NotFound();
+        return NoContent(); // Retorna 204 si todo salió bien
+    }
 }

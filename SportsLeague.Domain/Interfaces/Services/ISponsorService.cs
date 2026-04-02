@@ -7,4 +7,5 @@ public interface ISponsorService
 {
     Task<SponsorResponseDTO> CreateAsync(SponsorRequestDTO request);
     Task<SponsorResponseDTO?> GetByIdAsync(int id);
+    Task<bool> DeleteAsync(int id);
 }
