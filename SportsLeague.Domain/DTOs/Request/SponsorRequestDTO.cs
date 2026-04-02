@@ -10,3 +10,9 @@ public class SponsorRequestDTO
     public string? WebsiteUrl { get; set; }
     public SponsorCategory Category { get; set; }
 }
+public class TournamentSponsorRequestDTO
+{
+    public int TournamentId { get; set; }
+    public int SponsorId { get; set; }
+    public decimal ContractAmount { get; set; } // Debe ser > 0
+}
