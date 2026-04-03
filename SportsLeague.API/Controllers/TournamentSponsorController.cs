@@ -6,12 +6,12 @@ using SportsLeague.Domain.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TournamentSponsorsController : ControllerBase
+public class TournamentSponsorController : ControllerBase
 {
     private readonly IGenericRepository<TournamentSponsor> _repository;
     private readonly IMapper _mapper;
 
-    public TournamentSponsorsController(IGenericRepository<TournamentSponsor> repository, IMapper mapper)
+    public TournamentSponsorController(IGenericRepository<TournamentSponsor> repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;

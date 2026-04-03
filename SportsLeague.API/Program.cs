@@ -1,21 +1,37 @@
 using Microsoft.EntityFrameworkCore;
+using SportsLeague.API.Services;
+using SportsLeague.DataAccess.Repositories;
+using SportsLeague.Domain.Entities;
+using SportsLeague.Domain.Interfaces;
+using SportsLeague.Domain.Interfaces.Repositories;
+using SportsLeague.Domain.Interfaces.Services;
+using System.ComponentModel.Design;
 
 var builder = WebApplication.CreateBuilder(args);
-// Registro del DbContext para que la API sepa usar SQL Server
-builder.Services.AddDbContext<SportsLeague.DataAccess.ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Registro del Repositorio Genérico
-builder.Services.AddScoped(typeof(SportsLeague.Domain.Interfaces.IGenericRepository<>), typeof(SportsLeague.DataAccess.Repositories.GenericRepository<>));
 
+// --- REPOSITORIOS ---
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IRefereeRepository, RefereeRepository>();
+builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
+builder.Services.AddScoped<ISponsorRepository, SponsorRepository>();
+
+// GENÉRICO
+builder.Services.AddScoped<IGenericRepository<TournamentSponsor>, GenericRepository<TournamentSponsor>>();
+
+// --- SERVICIOS ---
+builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IRefereeService, RefereeService>();
+builder.Services.AddScoped<ITournamentService, TournamentService>();
+builder.Services.AddScoped<ISponsorService, SponsorService>();
+
+// --- CONFIGURACIONES ---
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
 
 var app = builder.Build();
 
