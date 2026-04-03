@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SportsLeague.Domain.DTOs.Request;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces;
@@ -8,11 +9,23 @@ using SportsLeague.Domain.Interfaces;
 public class TournamentSponsorsController : ControllerBase
 {
     private readonly IGenericRepository<TournamentSponsor> _repository;
+    private readonly IMapper _mapper;
 
-    public TournamentSponsorsController(IGenericRepository<TournamentSponsor> repository)
+    public TournamentSponsorsController(IGenericRepository<TournamentSponsor> repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(TournamentSponsorRequestDTO request)
+    {
+        var entity = _mapper.Map<TournamentSponsor>(request);
+        await _repository.AddAsync(entity);
+        await _repository.SaveAsync();
+        return Ok(entity);
+    }
+
 
     // Actualizar Monto del Contrato (Update)
     [HttpPut("{id}")]
