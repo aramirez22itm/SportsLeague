@@ -26,7 +26,7 @@ public class SponsorService : ISponsorService
 
         var entity = _mapper.Map<Sponsor>(request);
         await _repository.AddAsync(entity); // Método heredado del genérico [cite: 49]
-
+        await _repository.SaveAsync();
         return _mapper.Map<SponsorResponseDTO>(entity);
     }
 
@@ -54,8 +54,8 @@ public class SponsorService : ISponsorService
     }
     public async Task<bool> UpdateAsync(int id, Sponsor sponsor)
     {
-        var existingSponsor = await _repository.GetByIdAsync(id);
-        if (existingSponsor == null) return false;
+        // var existingSponsor = await _repository.GetByIdAsync(id);
+        // if (existingSponsor == null) return false;
 
         // Actualizamos los datos
         _repository.Update(sponsor);

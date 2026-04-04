@@ -31,8 +31,8 @@ public class MappingProfile : Profile
         CreateMap<SponsorRequestDTO, Sponsor>(); // De Solicitud a Entidad
 
         // Mapeos para TournamentSponsor
-        // CreateMap<TournamentSponsor, TournamentSponsorResponseDTO>().ReverseMap();
-        // CreateMap<TournamentSponsorRequestDTO, TournamentSponsor>().ReverseMap();
+        CreateMap<TournamentSponsor, TournamentSponsorResponseDTO>().ReverseMap();
+        CreateMap<TournamentSponsorRequestDTO, TournamentSponsor>().ReverseMap();
 
     }
 }

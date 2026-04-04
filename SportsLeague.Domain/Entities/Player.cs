@@ -1,4 +1,6 @@
-﻿namespace SportsLeague.Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace SportsLeague.Domain.Entities;
 
 public class Player
 {
@@ -7,5 +9,7 @@ public class Player
     public string LastName { get; set; } = string.Empty;
     public int Number { get; set; }
     public int TeamId { get; set; } // Relación con Equipo
-    public Team Team { get; set; } = null!;
+   
+    [JsonIgnore]
+    public Team? Team { get; set; }
 }
