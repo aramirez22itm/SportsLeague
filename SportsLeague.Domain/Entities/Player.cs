@@ -6,6 +6,6 @@ public class Player
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public int Number { get; set; }
-    public int TeamId { get; set; } // Relación con Equipo [cite: 93]
+    public int TeamId { get; set; } // Relación con Equipo
     public Team Team { get; set; } = null!;
 }

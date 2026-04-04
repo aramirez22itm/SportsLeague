@@ -9,7 +9,8 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // Esto le dice: "Puedes convertir un Team en un TeamDto automáticamente"
-        CreateMap<Team, TeamDto>().ReverseMap();
+        CreateMap<Team, TeamResponseDTO>().ReverseMap();
+        CreateMap<TeamRequestDTO, Team>().ReverseMap();
 
         // Mapeos para Sponsor 
         CreateMap<Sponsor, SponsorResponseDTO>(); // De Entidad a Respuesta
