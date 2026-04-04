@@ -30,6 +30,7 @@ builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IRefereeService, RefereeService>();
 builder.Services.AddScoped<ITournamentService, TournamentService>();
 builder.Services.AddScoped<ISponsorService, SponsorService>();
+builder.Services.AddScoped<ITournamentSponsorService, TournamentSponsorService>();
 
 // --- CONFIGURACIONES ---
 builder.Services.AddAutoMapper(typeof(MappingProfile));
