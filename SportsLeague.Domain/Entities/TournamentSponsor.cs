@@ -11,7 +11,14 @@ public class TournamentSponsor
     public Sponsor Sponsor { get; private set; } = null!;
 
     public decimal ContractAmount { get; private set; }
+    public void UpdateContractAmount(decimal newAmount)
+    {
+        if (newAmount <= 0)
+            throw new ArgumentException("El monto del contrato debe ser mayor a cero.");
 
+        ContractAmount = newAmount;
+        UpdatedAt = DateTime.UtcNow;
+    }
     public DateTime JoinedAt { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }

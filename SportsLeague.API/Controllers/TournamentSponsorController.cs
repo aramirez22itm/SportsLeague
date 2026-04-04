@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SportsLeague.Domain.DTOs.Request;
+using SportsLeague.Domain.DTOs.Response;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces;
 
@@ -34,18 +35,23 @@ public class TournamentSponsorController : ControllerBase
 
     // Actualizar Monto del Contrato (Update)
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAmount(int id, decimal newAmount)
+    public async Task<IActionResult> Update(int id, UpdateTournamentSponsorDTO dto)
     {
         var link = await _repository.GetByIdAsync(id);
         if (link == null) return NotFound();
 
-        link.ContractAmount = newAmount;
+        // Aplicar lógica de dominio
+        link.UpdateContractAmount(dto.ContractAmount);
 
-        _repository.Update(link); // SIN await porque devuelve void
-        await _repository.SaveAsync(); // CON await para guardar en SQL
+        _repository.Update(link);
+        await _repository.SaveAsync();
 
-        return Ok(link);
+        // Convertir a Response DTO
+        var response = TournamentSponsorResponseDTO.FromEntity(link);
+
+        return Ok(response);
     }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteLink(int id)
