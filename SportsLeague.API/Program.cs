@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SportsLeague.API.Services;
+using SportsLeague.DataAccess;
 using SportsLeague.DataAccess.Repositories;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces;
@@ -9,6 +10,9 @@ using System.ComponentModel.Design;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// --- CONFIGURACIÓN DE BASE DE DATOS ---
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // --- REPOSITORIOS ---
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
@@ -30,6 +34,11 @@ builder.Services.AddScoped<ISponsorService, SponsorService>();
 // --- CONFIGURACIONES ---
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddControllers();
+
+// --- SWAGGER ---
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
