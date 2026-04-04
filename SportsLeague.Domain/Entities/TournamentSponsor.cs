@@ -1,15 +1,34 @@
-﻿namespace SportsLeague.Domain.Entities;
+﻿using SportsLeague.Domain.Entities;
 
 public class TournamentSponsor
 {
-    public int Id { get; set; } // PK 
+    public int Id { get; private set; }
 
-    public int TournamentId { get; set; } // FK a Tournament 
-    public Tournament Tournament { get; set; } = null!; // Propiedad de navegación 
+    public int TournamentId { get; private set; }
+    public Tournament Tournament { get; private set; } = null!;
 
-    public int SponsorId { get; set; } // FK a Sponsor 
-    public Sponsor Sponsor { get; set; } = null!; // Propiedad de navegación 
+    public int SponsorId { get; private set; }
+    public Sponsor Sponsor { get; private set; } = null!;
 
-    public decimal ContractAmount { get; set; } // Monto del contrato 
-    public DateTime JoinedAt { get; set; } = DateTime.Now; // Fecha de vinculación 
+    public decimal ContractAmount { get; private set; }
+
+    public DateTime JoinedAt { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
+
+    protected TournamentSponsor() { }
+
+    public TournamentSponsor(
+        int tournamentId,
+        int sponsorId,
+        decimal contractAmount,
+        DateTime joinedAt,
+        DateTime createdAt)
+    {
+        TournamentId = tournamentId;
+        SponsorId = sponsorId;
+        ContractAmount = contractAmount;
+        JoinedAt = joinedAt;
+        CreatedAt = createdAt;
+    }
 }
