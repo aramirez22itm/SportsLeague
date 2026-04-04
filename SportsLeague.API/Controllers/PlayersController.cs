@@ -28,4 +28,15 @@ public class PlayersController : ControllerBase
         await _repo.SaveAsync();
         return NoContent();
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Player player)
+    {
+        if (id != player.Id) return BadRequest();
+
+        _repo.Update(player);
+        await _repo.SaveAsync();
+
+        return NoContent();
+    }
 }

@@ -19,6 +19,15 @@ public class TournamentsController : ControllerBase
         await _repo.SaveAsync();
         return Ok(Tournament);
     }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Tournament tournament)
+    {
+        if (id != tournament.Id) return BadRequest();
+        _repo.Update(tournament);
+        await _repo.SaveAsync();
+        return NoContent();
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

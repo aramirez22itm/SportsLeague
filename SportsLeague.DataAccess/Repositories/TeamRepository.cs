@@ -10,6 +10,6 @@ public class TeamRepository : GenericRepository<Team>, ITeamRepository
 
     public async Task<bool> ExistsByNameAsync(string name)
     {
-        return await _context.Set<Sponsor>().AnyAsync(x => x.Name == name);
+        return await _context.Set<Team>().AnyAsync(x => x.Name == name);
     }
 }

@@ -28,4 +28,15 @@ public class RefereesController : ControllerBase
         await _repo.SaveAsync();
         return NoContent();
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Referee referee)
+    {
+        if (id != referee.Id) return BadRequest();
+
+        _repo.Update(referee);
+        await _repo.SaveAsync();
+
+        return NoContent();
+    }
 }

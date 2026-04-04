@@ -44,5 +44,16 @@ public class TeamsController : ControllerBase
 
         return NoContent(); // Código 204: Borrado con éxito
     }
-    
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Team team)
+    {
+        if (id != team.Id) return BadRequest();
+
+        _repository.Update(team);
+        await _repository.SaveAsync();
+
+        return NoContent();
+    }
+
 }

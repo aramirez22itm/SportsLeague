@@ -52,4 +52,13 @@ public class SponsorService : ISponsorService
 
         return true;
     }
+    public async Task<bool> UpdateAsync(int id, Sponsor sponsor)
+    {
+        var existingSponsor = await _repository.GetByIdAsync(id);
+        if (existingSponsor == null) return false;
+
+        // Actualizamos los datos
+        _repository.Update(sponsor);
+        return await _repository.SaveAsync();
+    }
 }

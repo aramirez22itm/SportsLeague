@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsLeague.Domain.DTOs.Request;
+using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces.Services;
 
 namespace SportsLeague.API.Controllers;
@@ -50,5 +51,16 @@ public class SponsorController : ControllerBase
         var deleted = await _service.DeleteAsync(id);
         if (!deleted) return NotFound();
         return NoContent(); // Retorna 204 si todo salió bien
+    }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Sponsor sponsor)
+    {
+        if (id != sponsor.Id) return BadRequest();
+
+        // Aquí usamos el servicio que declaraste arriba
+        var result = await _service.UpdateAsync(id, sponsor);
+        if (!result) return NotFound();
+
+        return NoContent();
     }
 }

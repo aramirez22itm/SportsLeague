@@ -7,7 +7,21 @@ using SportsLeague.Domain.Entities;
 public class MappingProfile : Profile
 {
     public MappingProfile()
+
     {
+        // Mapeos para Player
+        CreateMap<Player, PlayerResponseDTO>();
+        CreateMap<PlayerRequestDTO, Player>();
+
+        // Mapeos para Referee
+        CreateMap<Referee, RefereeResponseDTO>();
+        CreateMap<RefereeRequestDTO, Referee>();
+
+        // Mapeos para Tournament
+        CreateMap<Tournament, TournamentResponseDTO>();
+        CreateMap<TournamentRequestDTO, Tournament>();
+
+
         // Esto le dice: "Puedes convertir un Team en un TeamDto automáticamente"
         CreateMap<Team, TeamResponseDTO>().ReverseMap();
         CreateMap<TeamRequestDTO, Team>().ReverseMap();

@@ -20,9 +20,10 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IRefereeRepository, RefereeRepository>();
 builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
 builder.Services.AddScoped<ISponsorRepository, SponsorRepository>();
+// builder.Services.AddScoped<ITournamentSponsorRepository, GenericRepository<TournamentSponsor>>();
 
 // GENÉRICO
-builder.Services.AddScoped<IGenericRepository<TournamentSponsor>, GenericRepository<TournamentSponsor>>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 // --- SERVICIOS ---
 builder.Services.AddScoped<IPlayerService, PlayerService>();
@@ -30,7 +31,8 @@ builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IRefereeService, RefereeService>();
 builder.Services.AddScoped<ITournamentService, TournamentService>();
 builder.Services.AddScoped<ISponsorService, SponsorService>();
-builder.Services.AddScoped<ITournamentSponsorService, TournamentSponsorService>();
+// builder.Services.AddScoped<ITournamentSponsorService, TournamentSponsorService>();
+
 
 // --- CONFIGURACIONES ---
 builder.Services.AddAutoMapper(typeof(MappingProfile));
