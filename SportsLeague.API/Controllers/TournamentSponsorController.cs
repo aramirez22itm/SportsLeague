@@ -52,17 +52,5 @@ public class TournamentSponsorController : ControllerBase
         return Ok(response);
     }
 
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteLink(int id)
-    {
-        var link = await _repository.GetByIdAsync(id);
-        if (link == null) return NotFound();
-
-        _repository.Delete(link); // SIN await porque devuelve void
-        await _repository.SaveAsync(); // CON await para guardar en SQL
-
-        return NoContent();
-    }
-
-}
+                                                                                        
+    }                                                                                                                                                                                                                                                                                                                                                                                                   
