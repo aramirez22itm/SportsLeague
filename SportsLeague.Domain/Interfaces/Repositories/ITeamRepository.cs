@@ -1,9 +1,15 @@
 ﻿using SportsLeague.Domain.Entities;
+using SportsLeague.Domain.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SportsLeague.Domain.Interfaces.Repositories
 {
     public interface ITeamRepository : IGenericRepository<Team>
     {
-        // Aquí puedes agregar métodos específicos si el profesor lo pide
+        Task<bool> ExistsByNameAsync(string name);
+
+      
     }
+
 }

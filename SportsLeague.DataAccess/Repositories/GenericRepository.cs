@@ -3,44 +3,51 @@ using SportsLeague.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
+
 namespace SportsLeague.DataAccess.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected readonly ApplicationDbContext _context;
+    protected readonly DbSet<T> _dbSet;
 
     public GenericRepository(ApplicationDbContext context)
     {
         _context = context;
+        _dbSet = _context.Set<T>();
     }
 
     public async Task<IEnumerable<T>> GetAllAsync()
-    {
-        return await _context.Set<T>().ToListAsync();
-    }
+        => await _dbSet.ToListAsync();
 
     public async Task<T?> GetByIdAsync(int id)
+        => await _dbSet.FindAsync(id);
+
+    public async Task<bool> CreateAsync(T entity)
     {
-        return await _context.Set<T>().FindAsync(id);
+        _dbSet.Add(entity);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
-    public async Task AddAsync(T entity)
+    public async Task<bool> UpdateAsync(T entity)
     {
-        await _context.Set<T>().AddAsync(entity);
+        _dbSet.Update(entity);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
-    public void Update(T entity)
+    public async Task<bool> DeleteAsync(int id)
     {
-        _context.Set<T>().Update(entity);
+        var entity = await GetByIdAsync(id);
+        if (entity == null) return false;
+
+        _dbSet.Remove(entity);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
-    public void Delete(T entity)
-    {
-        _context.Set<T>().Remove(entity);
-    }
-
-    public async Task<bool> SaveAsync()
-    {
-        return await _context.SaveChangesAsync() > 0;
-    }
+    public async Task<bool> ExistsAsync(int id)
+        => await GetByIdAsync(id) != null;
 }
