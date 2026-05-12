@@ -35,7 +35,7 @@ builder.Services.AddScoped<ISponsorService, SponsorService>();
 
 
 // --- CONFIGURACIONES ---
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 
 // --- SWAGGER ---

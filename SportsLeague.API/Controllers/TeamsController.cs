@@ -27,7 +27,7 @@ public class TeamsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Team>> CreateTeam(Team team)
     {
-        await _repository.AddAsync(team);
+        await _repository.CreateAsync(team);
         await _repository.SaveAsync();
         return Ok(team);
     }
@@ -39,7 +39,7 @@ public class TeamsController : ControllerBase
         // Si no existe el equipo con ese ID, avisamos
         if (team == null) return NotFound();
 
-        _repository.Delete(team);
+        _repository.DeleteAsync(id);
         await _repository.SaveAsync();
 
         return NoContent(); // Código 204: Borrado con éxito
@@ -50,7 +50,7 @@ public class TeamsController : ControllerBase
     {
         if (id != team.Id) return BadRequest();
 
-        _repository.Update(team);
+        _repository.UpdateAsync(team);
         await _repository.SaveAsync();
 
         return NoContent();

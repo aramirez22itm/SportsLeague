@@ -15,7 +15,7 @@ public class PlayersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(Player player)
     {
-        await _repo.AddAsync(player);
+        await _repo.CreateAsync(player);
         await _repo.SaveAsync();
         return Ok(player);
     }
@@ -24,7 +24,7 @@ public class PlayersController : ControllerBase
     {
         var entity = await _repo.GetByIdAsync(id);
         if (entity == null) return NotFound();
-        _repo.Delete(entity);
+        await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
         return NoContent();
     }
@@ -34,7 +34,7 @@ public class PlayersController : ControllerBase
     {
         if (id != player.Id) return BadRequest();
 
-        _repo.Update(player);
+        await _repo.UpdateAsync(player);
         await _repo.SaveAsync();
 
         return NoContent();

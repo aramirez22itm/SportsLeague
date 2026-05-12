@@ -15,7 +15,7 @@ public class TournamentsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(Tournament Tournament)
     {
-        await _repo.AddAsync(Tournament);
+        await _repo.CreateAsync(Tournament);
         await _repo.SaveAsync();
         return Ok(Tournament);
     }
@@ -23,7 +23,7 @@ public class TournamentsController : ControllerBase
     public async Task<IActionResult> Put(int id, Tournament tournament)
     {
         if (id != tournament.Id) return BadRequest();
-        _repo.Update(tournament);
+        _repo.UpdateAsync(tournament);
         await _repo.SaveAsync();
         return NoContent();
     }
@@ -33,7 +33,7 @@ public class TournamentsController : ControllerBase
     {
         var entity = await _repo.GetByIdAsync(id);
         if (entity == null) return NotFound();
-        _repo.Delete(entity);
+        await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
         return NoContent();
     }

@@ -25,7 +25,7 @@ public class SponsorService : ISponsorService
             throw new InvalidOperationException("A sponsor with this name already exists.");
 
         var entity = _mapper.Map<Sponsor>(request);
-        await _repository.AddAsync(entity); // Método heredado del genérico [cite: 49]
+        await _repository.CreateAsync(entity); // Método heredado del genérico [cite: 49]
         await _repository.SaveAsync();
         return _mapper.Map<SponsorResponseDTO>(entity);
     }
@@ -47,7 +47,7 @@ public class SponsorService : ISponsorService
         var entity = await _repository.GetByIdAsync(id);
         if (entity == null) return false;
 
-        _repository.Delete(entity); // Usa el Delete del GenericRepository
+        _repository.DeleteAsync(id); // Usa el Delete del GenericRepository
         await _repository.SaveAsync();
 
         return true;
@@ -58,7 +58,7 @@ public class SponsorService : ISponsorService
         // if (existingSponsor == null) return false;
 
         // Actualizamos los datos
-        _repository.Update(sponsor);
+        _repository.UpdateAsync(sponsor);
         return await _repository.SaveAsync();
     }
 }

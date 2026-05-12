@@ -18,14 +18,14 @@ namespace SportsLeague.API.Services
 
         public async Task<bool> CreateAsync(Player entity)
         {
-            await _repository.AddAsync(entity);
+            await _repository.CreateAsync(entity);
             await _repository.SaveAsync();
             return true;
         }
 
         public async Task<bool> UpdateAsync(Player entity)
         {
-            _repository.Update(entity);
+            _repository.UpdateAsync(entity);
             await _repository.SaveAsync();
             return true;
         }
@@ -35,7 +35,7 @@ namespace SportsLeague.API.Services
             var entity = await _repository.GetByIdAsync(id);
             if (entity == null) return false;
 
-            _repository.Delete(entity); // El Delete es sincrónico (void)
+            _repository.DeleteAsync(id); // El Delete es sincrónico (void)
             await _repository.SaveAsync(); // El Save es asíncrono
             return true;
         }

@@ -22,7 +22,7 @@ public class TournamentSponsorController : ControllerBase
     public async Task<IActionResult> Create(TournamentSponsorRequestDTO request)
     {
         var entity = _mapper.Map<TournamentSponsor>(request);
-        await _repository.AddAsync(entity);
+        await _repository.CreateAsync(entity);
         await _repository.SaveAsync();
         return Ok(entity);
     }
@@ -43,7 +43,7 @@ public class TournamentSponsorController : ControllerBase
         // Aplicar lógica de dominio
         link.UpdateContractAmount(dto.ContractAmount);
 
-        _repository.Update(link);
+        _repository.UpdateAsync(link);
         await _repository.SaveAsync();
 
         // Convertir a Response DTO

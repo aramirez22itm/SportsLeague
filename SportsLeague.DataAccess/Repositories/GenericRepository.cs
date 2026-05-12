@@ -44,10 +44,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         if (entity == null) return false;
 
         _dbSet.Remove(entity);
-        await _context.SaveChangesAsync();
-        return true;
+        return await _context.SaveChangesAsync() > 0;
     }
 
     public async Task<bool> ExistsAsync(int id)
         => await GetByIdAsync(id) != null;
+
+    public async Task<bool> SaveAsync()
+        => await _context.SaveChangesAsync() > 0;
 }

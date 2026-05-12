@@ -13,18 +13,20 @@ public class RefereesController : ControllerBase
     public async Task<IActionResult> Get() => Ok(await _repo.GetAllAsync());
 
     [HttpPost]
-    public async Task<IActionResult> Post(Referee Referee)
+    public async Task<IActionResult> Post(Referee referee)
     {
-        await _repo.AddAsync(Referee);
+        await _repo.CreateAsync(referee);
         await _repo.SaveAsync();
-        return Ok(Referee);
+        return Ok(referee);
     }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var entity = await _repo.GetByIdAsync(id);
         if (entity == null) return NotFound();
-        _repo.Delete(entity);
+
+        await _repo.DeleteAsync(id); // Cambiado para enviar el id
         await _repo.SaveAsync();
         return NoContent();
     }
@@ -34,7 +36,7 @@ public class RefereesController : ControllerBase
     {
         if (id != referee.Id) return BadRequest();
 
-        _repo.Update(referee);
+        await _repo.UpdateAsync(referee); // Agregado el await
         await _repo.SaveAsync();
 
         return NoContent();
