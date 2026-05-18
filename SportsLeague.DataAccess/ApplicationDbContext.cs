@@ -18,6 +18,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<TournamentSponsor> TournamentSponsors { get; set; }
     public DbSet<TournamentTeam> TournamentTeams => Set<TournamentTeam>();
     public DbSet<Match> Matches => Set<Match>();
+    public DbSet<MatchResult> MatchResults => Set<MatchResult>();
+    public DbSet<Goal> Goals => Set<Goal>();
+    public DbSet<Card> Cards => Set<Card>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -93,6 +96,53 @@ public class ApplicationDbContext : DbContext
                 .HasForeignKey(m => m.RefereeId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
+        modelBuilder.Entity<MatchResult>(entity =>
+        {
+            entity.HasKey(mr => mr.Id);
+
+            entity.Property(mr => mr.HomeGoals).IsRequired();
+            entity.Property(mr => mr.AwayGoals).IsRequired();
+
+            entity.HasOne(mr => mr.Match)
+                .WithOne(m => m.MatchResult)
+                .HasForeignKey<MatchResult>(mr => mr.MatchId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Goal>(entity =>
+        {
+            entity.HasKey(g => g.Id);
+
+            entity.Property(g => g.Minute).IsRequired();
+
+            entity.HasOne(g => g.Match)
+                .WithMany(m => m.Goals)
+                .HasForeignKey(g => g.MatchId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(g => g.Player)
+                .WithMany(p => p.Goals)
+                .HasForeignKey(g => g.PlayerId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Card>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+
+            entity.Property(c => c.Minute).IsRequired();
+
+            entity.HasOne(c => c.Match)
+                .WithMany(m => m.Cards)
+                .HasForeignKey(c => c.MatchId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(c => c.Player)
+                .WithMany(p => p.Cards)
+                .HasForeignKey(c => c.PlayerId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
     }
 
 }
