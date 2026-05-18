@@ -7,6 +7,9 @@ public class Player
     public string LastName { get; private set; }
     public int Number { get; private set; }
     public int TeamId { get; private set; }
+    public ICollection<Goal> Goals { get; set; } = new List<Goal>();
+    public ICollection<Card> Cards { get; set; } = new List<Card>();
+
 
     [JsonIgnore]
     public Team? Team { get; private set; }
