@@ -8,6 +8,8 @@
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
         public ICollection<TournamentTeam> TournamentTeams { get; set; } = new List<TournamentTeam>();
+        public ICollection<Match> Matches { get; set; } = new List<Match>();
+
         public Tournament(string name, string season, DateTime startDate, DateTime endDate)
         
         

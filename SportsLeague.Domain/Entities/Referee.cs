@@ -6,6 +6,7 @@
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string Nationality { get; private set; }
+        public ICollection<Match> Matches { get; set; } = new List<Match>();
 
         public Referee(string firstName, string lastName, string nationality)
         {

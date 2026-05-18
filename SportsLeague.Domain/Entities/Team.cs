@@ -13,6 +13,9 @@
         public DateTime? UpdatedAt { get; private set; }
 
         public ICollection<TournamentTeam> TournamentTeams { get; set; } = new List<TournamentTeam>();
+        public ICollection<Match> HomeMatches { get; set; } = new List<Match>();
+        public ICollection<Match> AwayMatches { get; set; } = new List<Match>();
+
         public Team(string name, string city, DateTime foundedDate, string? stadium = null, string? logoUrl = null)
         {
             if (string.IsNullOrWhiteSpace(name))

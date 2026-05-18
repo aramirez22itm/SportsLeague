@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using SportsLeague.API.DTOs.Request;
+using SportsLeague.API.DTOs.Response;
 using SportsLeague.Domain.DTOs;
 using SportsLeague.Domain.DTOs.Request;
 using SportsLeague.Domain.DTOs.Response;
@@ -33,6 +35,15 @@ public class MappingProfile : Profile
         // Mapeos para TournamentSponsor
         CreateMap<TournamentSponsor, TournamentSponsorResponseDTO>().ReverseMap();
         CreateMap<TournamentSponsorRequestDTO, TournamentSponsor>().ReverseMap();
+
+        // Mapeos para Match
+        CreateMap<MatchRequestDTO, Match>();
+
+        CreateMap<Match, MatchResponseDTO>()
+            .ForMember(dest => dest.TournamentName, opt => opt.MapFrom(src => src.Tournament.Name))
+            .ForMember(dest => dest.HomeTeamName, opt => opt.MapFrom(src => src.HomeTeam.Name))
+            .ForMember(dest => dest.AwayTeamName, opt => opt.MapFrom(src => src.AwayTeam.Name))
+            .ForMember(dest => dest.RefereeFullName, opt => opt.MapFrom(src => src.Referee.FirstName + " " + src.Referee.LastName));
 
     }
 }
