@@ -7,8 +7,10 @@
         public string Season { get; private set; }
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
-
+        public ICollection<TournamentTeam> TournamentTeams { get; set; } = new List<TournamentTeam>();
         public Tournament(string name, string season, DateTime startDate, DateTime endDate)
+        
+        
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("El nombre del torneo no puede estar vacío.");

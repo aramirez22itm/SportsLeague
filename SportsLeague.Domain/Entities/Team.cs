@@ -12,6 +12,7 @@
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; private set; }
 
+        public ICollection<TournamentTeam> TournamentTeams { get; set; } = new List<TournamentTeam>();
         public Team(string name, string city, DateTime foundedDate, string? stadium = null, string? logoUrl = null)
         {
             if (string.IsNullOrWhiteSpace(name))

@@ -15,7 +15,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Tournament> Tournaments { get; set; }
 
     public DbSet<Sponsor> Sponsors { get; set; }
-    public DbSet<TournamentSponsor> TournamentSponsors { get; set; } 
+    public DbSet<TournamentSponsor> TournamentSponsors { get; set; }
+    public DbSet<TournamentTeam> TournamentTeams => Set<TournamentTeam>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,5 +41,26 @@ public class ApplicationDbContext : DbContext
             .Property(ts => ts.ContractAmount)
             .HasPrecision(18, 2); // Configuración para decimales
 
+        modelBuilder.Entity<TournamentTeam>(entity =>
+        {
+            entity.HasKey(tt => tt.Id);
+
+            entity.Property(tt => tt.RegisteredAt).IsRequired();
+            entity.Property(tt => tt.CreatedAt).IsRequired();
+            entity.Property(tt => tt.UpdatedAt).IsRequired(false);
+
+            entity.HasOne(tt => tt.Tournament)
+                .WithMany(t => t.TournamentTeams)
+                .HasForeignKey(tt => tt.TournamentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(tt => tt.Team)
+                .WithMany(t => t.TournamentTeams)
+                .HasForeignKey(tt => tt.TeamId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(tt => new { tt.TournamentId, tt.TeamId }).IsUnique();
+        });
     }
+
 }
