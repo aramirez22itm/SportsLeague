@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using SportsLeague.Domain.DTOs.Request;
 using SportsLeague.Domain.DTOs.Response;
 using SportsLeague.Domain.Entities;
-using SportsLeague.Domain.Interfaces;
+using SportsLeague.Domain.Interfaces.Repositories;
+using System;
+
+
 
 [ApiController]
 [Route("api/[controller]")]
@@ -23,7 +26,7 @@ public class TournamentSponsorController : ControllerBase
     {
         var entity = _mapper.Map<TournamentSponsor>(request);
         await _repository.CreateAsync(entity);
-        await _repository.SaveAsync();
+        
         return Ok(entity);
     }
 
@@ -44,7 +47,7 @@ public class TournamentSponsorController : ControllerBase
         link.UpdateContractAmount(dto.ContractAmount);
 
         _repository.UpdateAsync(link);
-        await _repository.SaveAsync();
+        
 
         // Convertir a Response DTO
         var response = TournamentSponsorResponseDTO.FromEntity(link);

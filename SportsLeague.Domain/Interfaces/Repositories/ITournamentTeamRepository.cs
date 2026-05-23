@@ -1,11 +1,12 @@
-﻿using SportsLeague.Domain.Entities;
+﻿
+using SportsLeague.Domain.Entities;
 
-namespace SportsLeague.Domain.Interfaces.Repositories
+namespace SportsLeague.Domain.Interfaces.Repositories;
+
+public interface ITournamentTeamRepository : IGenericRepository<TournamentTeam>
 {
-    public interface ITournamentTeamRepository : IGenericRepository<TournamentTeam>
-    {
-        Task<TournamentTeam?> GetByTournamentAndTeamAsync(int tournamentId, int teamId);
-        Task<IEnumerable<TournamentTeam>> GetByTournamentAsync(int tournamentId);
-    }
+    Task<TournamentTeam?> GetByTournamentAndTeamAsync(int tournamentId, int teamId);
+    Task<IEnumerable<TournamentTeam>> GetByTournamentAsync(int tournamentId);
 }
+
 

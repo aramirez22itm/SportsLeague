@@ -1,52 +1,54 @@
 ﻿using Microsoft.EntityFrameworkCore;
-// using SportsLeague.DataAccess.Context;
 using SportsLeague.Domain.Entities;
+using SportsLeague.DataAccess.Context;
 using SportsLeague.Domain.Interfaces.Repositories;
 
 namespace SportsLeague.DataAccess.Repositories
 {
     public class MatchRepository : GenericRepository<Match>, IMatchRepository
     {
-        public MatchRepository(ApplicationDbContext context) : base(context) { }
+        public MatchRepository(LeagueDbContext context) : base(context)
+        {
+        }
 
         public async Task<IEnumerable<Match>> GetByTournamentAsync(int tournamentId)
         {
             return await _dbSet
-                .Where(m => m.TournamentId == tournamentId)
-                .OrderBy(m => m.Matchday)
-                .ThenBy(m => m.MatchDate)
+                .Where(x => x.TournamentId == tournamentId)
+                .OrderBy(x => x.MatchDate)   // ← MatchDay NO EXISTE
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Match>> GetByTeamAsync(int teamId)
         {
             return await _dbSet
-                .Where(m => m.HomeTeamId == teamId || m.AwayTeamId == teamId)
-                .Include(m => m.HomeTeam)
-                .Include(m => m.AwayTeam)
-                .OrderBy(m => m.MatchDate)
+                .Include(x => x.HomeTeam)
+                .Include(x => x.AwayTeam)
+                .Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
                 .ToListAsync();
         }
 
         public async Task<Match?> GetByIdWithDetailsAsync(int id)
         {
             return await _dbSet
-                .Include(m => m.Tournament)
-                .Include(m => m.HomeTeam)
-                .Include(m => m.AwayTeam)
-                .Include(m => m.Referee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(x => x.HomeTeam)
+                .Include(x => x.AwayTeam)
+                .Include(x => x.Referee)
+                .Include(x => x.Goals)
+                .Include(x => x.Cards)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Match>> GetByTournamentWithDetailsAsync(int tournamentId)
         {
             return await _dbSet
-                .Where(m => m.TournamentId == tournamentId)
-                .Include(m => m.HomeTeam)
-                .Include(m => m.AwayTeam)
-                .Include(m => m.Referee)
-                .OrderBy(m => m.Matchday)
-                .ThenBy(m => m.MatchDate)
+                .Where(x => x.TournamentId == tournamentId)
+                .Include(x => x.HomeTeam)
+                .Include(x => x.AwayTeam)
+                .Include(x => x.Referee)
+                .Include(x => x.Goals)
+                .Include(x => x.Cards)
+                .OrderBy(x => x.MatchDate)   // ← MatchDay NO EXISTE
                 .ToListAsync();
         }
     }

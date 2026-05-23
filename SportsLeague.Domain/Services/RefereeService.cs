@@ -1,0 +1,42 @@
+﻿using SportsLeague.Domain.Entities;
+using SportsLeague.Domain.Interfaces.Repositories;
+using SportsLeague.Domain.Interfaces.Services;
+
+namespace SportsLeague.Domain.Services;
+
+public class RefereeService : IRefereeService // Aquí implementa la interfaz
+{
+    private readonly IRefereeRepository _repository;
+
+    public RefereeService(IRefereeRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task<IEnumerable<Referee>> GetAllAsync() => await _repository.GetAllAsync();
+    public async Task<Referee> GetByIdAsync(int id) => await _repository.GetByIdAsync(id);
+
+    public async Task<bool> CreateAsync(Referee entity)
+    {
+        await _repository.CreateAsync(entity);
+        
+        return true;
+    }
+
+    public async Task<bool> UpdateAsync(Referee entity)
+    {
+        _repository.UpdateAsync(entity);
+        
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity == null) return false;
+
+        _repository.DeleteAsync(id); // El Delete es sincrónico (void)
+       
+        return true;
+    }
+}

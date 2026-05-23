@@ -1,15 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SportsLeague.DataAccess.Context;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces.Repositories;
+
+
+
 
 namespace SportsLeague.DataAccess.Repositories;
 
 public class TeamRepository : GenericRepository<Team>, ITeamRepository
 {
-    public TeamRepository(ApplicationDbContext context) : base(context) { }
-
-    public async Task<bool> ExistsByNameAsync(string name)
+    public TeamRepository(LeagueDbContext context) : base(context)
     {
-        return await _context.Set<Team>().AnyAsync(x => x.Name == name);
     }
+
+
+    public async Task<Team?> GetByNameAsync(string name)
+        => await _dbSet.FirstOrDefaultAsync(t => t.Name.ToLower() == name.ToLower());
+
+    public async Task<IEnumerable<Team>> GetByCityAsync(string city)
+        => await _dbSet.Where(t => t.City.ToLower() == city.ToLower()).ToListAsync();
 }

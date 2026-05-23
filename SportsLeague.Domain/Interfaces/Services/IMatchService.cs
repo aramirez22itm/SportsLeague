@@ -1,8 +1,10 @@
 ﻿using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Enums;
+using SportsLeague.Domain.Interfaces.Repositories;
+using SportsLeague.Domain.Helpers;
 
-namespace SportsLeague.Domain.Interfaces.Services
-{
+namespace SportsLeague.Domain.Interfaces.Services;
+
     public interface IMatchService
     {
         Task<IEnumerable<Match>> GetAllByTournamentAsync(int tournamentId);
@@ -12,4 +14,4 @@ namespace SportsLeague.Domain.Interfaces.Services
         Task DeleteAsync(int id);
         Task UpdateStatusAsync(int id, MatchStatus newStatus);
     }
-}
+

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-// using SportsLeague.DataAccess.Context;
+using SportsLeague.DataAccess.Context;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces.Repositories;
 
@@ -7,7 +7,7 @@ namespace SportsLeague.DataAccess.Repositories
 {
     public class GoalRepository : GenericRepository<Goal>, IGoalRepository
     {
-        public GoalRepository(ApplicationDbContext context) : base(context) { }
+        public GoalRepository(LeagueDbContext context) : base(context) { }
 
         public async Task<IEnumerable<Goal>> GetByMatchAsync(int matchId)
         {
@@ -27,4 +27,3 @@ namespace SportsLeague.DataAccess.Repositories
         }
     }
 }
-

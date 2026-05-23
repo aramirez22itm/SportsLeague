@@ -1,14 +1,12 @@
-﻿using SportsLeague.Domain.DTOs.Request;
-using SportsLeague.Domain.DTOs.Response;
-using SportsLeague.Domain.Entities;
+﻿using SportsLeague.Domain.Entities;
 
 namespace SportsLeague.Domain.Interfaces.Services;
 
 public interface ISponsorService
 {
-    Task<IEnumerable<SponsorResponseDTO>> GetAllAsync();
-    Task<SponsorResponseDTO> CreateAsync(SponsorRequestDTO request);
-    Task<SponsorResponseDTO?> GetByIdAsync(int id);
-    Task<bool> UpdateAsync(int id, Sponsor sponsor);
-    Task<bool> DeleteAsync(int id);
+    Task<IEnumerable<Sponsor>> GetAllAsync();
+    Task<Sponsor?> GetByIdAsync(int id);
+    Task<Sponsor> CreateAsync(Sponsor sponsor);
+    Task UpdateAsync(int id, Sponsor sponsor);
+    Task DeleteAsync(int id);
 }

@@ -2,8 +2,8 @@
 {
     public enum TournamentStatus
     {
-        Pending = 0,
-        InProgress = 1,
-        Finished = 2
+        Scheduled = 1,
+        InProgress = 2,
+        Finished = 3
     }
 }

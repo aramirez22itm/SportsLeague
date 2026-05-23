@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-// using SportsLeague.DataAccess.Context;
+using SportsLeague.DataAccess.Context;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces.Repositories;
 
@@ -7,7 +7,7 @@ namespace SportsLeague.DataAccess.Repositories
 {
     public class CardRepository : GenericRepository<Card>, ICardRepository
     {
-        public CardRepository(ApplicationDbContext context) : base(context) { }
+        public CardRepository(LeagueDbContext context) : base(context) { }
 
         public async Task<IEnumerable<Card>> GetByMatchAsync(int matchId)
         {

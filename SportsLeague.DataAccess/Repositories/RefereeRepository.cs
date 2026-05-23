@@ -1,15 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SportsLeague.DataAccess.Context;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces.Repositories;
 
-namespace SportsLeague.DataAccess.Repositories;
 
-public class RefereeRepository : GenericRepository<Referee>, IRefereeRepository
+namespace SportsLeague.DataAccess.Repositories
 {
-    public RefereeRepository(ApplicationDbContext context) : base(context) { }
-
-    public async Task<bool> ExistsByNameAsync(string name)
+    public class RefereeRepository : GenericRepository<Referee>, IRefereeRepository
     {
-        return await _context.Set<Player>().AnyAsync(x => x.FirstName == name || x.LastName == name);
+        private readonly LeagueDbContext _context;
+
+        public RefereeRepository(LeagueDbContext context) : base(context)
+        {
+            _context = context;
+        }
+
+        public async Task<IEnumerable<Referee>> GetByNationalityAsync(string nationality)
+        {
+            return await _context.Referees
+                .Where(r => r.Nationality.ToLower() == nationality.ToLower())
+                .ToListAsync();
+        }
     }
 }

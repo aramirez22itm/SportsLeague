@@ -1,30 +1,27 @@
-﻿using SportsLeague.Domain.Entities;
-using System.Text.Json.Serialization;
-public class Player
+﻿using System;
+using System.Collections.Generic;
+
+namespace SportsLeague.Domain.Entities
 {
-    public int Id { get; private set; }
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
-    public int Number { get; private set; }
-    public int TeamId { get; private set; }
-    public ICollection<Goal> Goals { get; set; } = new List<Goal>();
-    public ICollection<Card> Cards { get; set; } = new List<Card>();
-
-
-    [JsonIgnore]
-    public Team? Team { get; private set; }
-
-    public Player(string firstName, string lastName, int number, int teamId)
+    public enum PlayerPosition
     {
-        if (string.IsNullOrWhiteSpace(firstName))
-            throw new ArgumentException("El nombre no puede estar vacío");
+        Goalkeeper,
+        Defender,
+        Midfielder,
+        Forward
+    }
 
-        if (string.IsNullOrWhiteSpace(lastName))
-            throw new ArgumentException("El apellido no puede estar vacío");
+    public class Player : AuditBase
+    {
+        public string FirstName { get; set; } = null!;
+        public string LastName { get; set; } = null!;
+        public DateTime BirthDate { get; set; }
+        public PlayerPosition Position { get; set; }
 
-        FirstName = firstName;
-        LastName = lastName;
-        Number = number;
-        TeamId = teamId;
+        public int TeamId { get; set; }
+        public Team Team { get; set; } = null!;
+
+        public ICollection<Goal> Goals { get; set; } = new List<Goal>();
+        public ICollection<Card> Cards { get; set; } = new List<Card>();
     }
 }

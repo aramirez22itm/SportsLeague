@@ -2,8 +2,8 @@
 {
     public enum GoalType
     {
-        Normal = 0,
-        Penalty = 1,
-        OwnGoal = 2
+        Regular = 1,
+        Penalty = 2,
+        OwnGoal = 3
     }
 }

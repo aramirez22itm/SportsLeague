@@ -1,44 +1,19 @@
-﻿namespace SportsLeague.Domain.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace SportsLeague.Domain.Entities
 {
-    public class Team
+    public class Team : AuditBase
     {
-        public int Id { get; private set; }
-        public string Name { get; private set; }
-        public string City { get; private set; }
-        public string? Stadium { get; private set; }
-        public string? LogoUrl { get; private set; }
-        public DateTime FoundedDate { get; private set; }
+        public string Name { get; set; } = null!;
+        public string City { get; set; } = null!;
+        public string Stadium { get; set; } = null!;
+        public string? LogoUrl { get; set; }
+        public DateTime FoundedDate { get; set; }
 
-        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
-        public DateTime? UpdatedAt { get; private set; }
-
+        public ICollection<Player> Players { get; set; } = new List<Player>();
         public ICollection<TournamentTeam> TournamentTeams { get; set; } = new List<TournamentTeam>();
         public ICollection<Match> HomeMatches { get; set; } = new List<Match>();
         public ICollection<Match> AwayMatches { get; set; } = new List<Match>();
-
-        public Team(string name, string city, DateTime foundedDate, string? stadium = null, string? logoUrl = null)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("El nombre del equipo no puede estar vacío.");
-
-            if (string.IsNullOrWhiteSpace(city))
-                throw new ArgumentException("La ciudad no puede estar vacía.");
-
-            if (foundedDate > DateTime.UtcNow)
-                throw new ArgumentException("La fecha de fundación no puede ser futura.");
-
-            Name = name;
-            City = city;
-            FoundedDate = foundedDate;
-            Stadium = stadium;
-            LogoUrl = logoUrl;
-        }
-
-        public void Update(string? stadium, string? logoUrl)
-        {
-            Stadium = stadium;
-            LogoUrl = logoUrl;
-            UpdatedAt = DateTime.UtcNow;
-        }
     }
 }

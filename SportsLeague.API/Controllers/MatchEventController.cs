@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SportsLeague.API.DTOs.Request;
-using SportsLeague.API.Services;
+using SportsLeague.API.DTOs.Response;
 using SportsLeague.Domain.Enums;
 using SportsLeague.Domain.Interfaces.Services;
+using System;
+
+
 
 namespace SportsLeague.API.Controllers
 {

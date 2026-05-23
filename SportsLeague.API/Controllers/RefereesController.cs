@@ -1,44 +1,73 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using SportsLeague.Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Mvc;
 using SportsLeague.Domain.Entities;
-using SportsLeague.Domain.Interfaces;
+using SportsLeague.Domain.Interfaces.Repositories;
+using System;
 
-[Route("api/[controller]")]
-[ApiController]
-public class RefereesController : ControllerBase
+
+
+namespace SportsLeague.API.Controllers
 {
-    private readonly IGenericRepository<Referee> _repo;
-    public RefereesController(IGenericRepository<Referee> repo) => _repo = repo;
-
-    [HttpGet]
-    public async Task<IActionResult> Get() => Ok(await _repo.GetAllAsync());
-
-    [HttpPost]
-    public async Task<IActionResult> Post(Referee referee)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RefereesController : ControllerBase
     {
-        await _repo.CreateAsync(referee);
-        await _repo.SaveAsync();
-        return Ok(referee);
-    }
+        private readonly IRefereeService _refereeService;
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var entity = await _repo.GetByIdAsync(id);
-        if (entity == null) return NotFound();
+        public RefereesController(IRefereeService refereeService)
+        {
+            _refereeService = refereeService;
+        }
 
-        await _repo.DeleteAsync(id); // Cambiado para enviar el id
-        await _repo.SaveAsync();
-        return NoContent();
-    }
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _refereeService.GetAllAsync());
+        }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, Referee referee)
-    {
-        if (id != referee.Id) return BadRequest();
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var referee = await _refereeService.GetByIdAsync(id);
+            if (referee is null) return NotFound();
+            return Ok(referee);
+        }
 
-        await _repo.UpdateAsync(referee); // Agregado el await
-        await _repo.SaveAsync();
+        [HttpPost]
+        public async Task<IActionResult> Post(Referee referee)
+        {
+            referee.CreatedAt = DateTime.UtcNow;
+            referee.UpdatedAt = DateTime.UtcNow;
 
-        return NoContent();
+            await _refereeService.CreateAsync(referee);
+            return CreatedAtAction(nameof(Get), new { id = referee.Id }, referee);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Referee referee)
+        {
+            if (id != referee.Id) return BadRequest();
+
+            var existing = await _refereeService.GetByIdAsync(id);
+            if (existing is null) return NotFound();
+
+            existing.FirstName = referee.FirstName;
+            existing.LastName = referee.LastName;
+            existing.Nationality = referee.Nationality;
+            existing.UpdatedAt = DateTime.UtcNow;
+
+            await _refereeService.UpdateAsync(existing);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var existing = await _refereeService.GetByIdAsync(id);
+            if (existing is null) return NotFound();
+
+            await _refereeService.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }

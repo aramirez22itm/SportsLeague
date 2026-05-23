@@ -1,7 +1,7 @@
 ﻿using SportsLeague.Domain.Entities;
 
-namespace SportsLeague.Domain.Interfaces.Services
-{
+namespace SportsLeague.Domain.Interfaces.Services;
+
     public interface ITournamentSponsorService
     {
         Task<IEnumerable<TournamentSponsor>> GetAllAsync();
@@ -10,4 +10,4 @@ namespace SportsLeague.Domain.Interfaces.Services
         Task<bool> UpdateAsync(TournamentSponsor entity);
         Task<bool> DeleteAsync(int id);
     }
-}
+
