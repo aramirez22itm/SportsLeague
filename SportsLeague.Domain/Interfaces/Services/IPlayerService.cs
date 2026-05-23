@@ -1,7 +1,8 @@
 ﻿using SportsLeague.Domain.Entities;
+using SportsLeague.Domain.Services;
 
-namespace SportsLeague.Domain.Interfaces.Services
-{
+namespace SportsLeague.Domain.Interfaces.Services;
+
     public interface IPlayerService
     {
         Task<IEnumerable<Player>> GetAllAsync();
@@ -10,4 +11,3 @@ namespace SportsLeague.Domain.Interfaces.Services
         Task<bool> UpdateAsync(Player entity);
         Task<bool> DeleteAsync(int id);
     }
-}

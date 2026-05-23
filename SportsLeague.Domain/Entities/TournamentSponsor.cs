@@ -1,6 +1,6 @@
 ﻿using SportsLeague.Domain.Entities;
 
-public class TournamentSponsor
+public class TournamentSponsor : AuditBase
 {
     public int Id { get; private set; }
 

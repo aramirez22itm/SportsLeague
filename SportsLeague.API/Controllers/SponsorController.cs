@@ -1,7 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SportsLeague.API.DTOs.Request;
+using SportsLeague.API.DTOs.Response;
 using SportsLeague.Domain.DTOs.Request;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces.Services;
+using SportsLeague.Domain.Services;
+using System;
+
+
 
 namespace SportsLeague.API.Controllers;
 
@@ -10,10 +17,11 @@ namespace SportsLeague.API.Controllers;
 public class SponsorController : ControllerBase
 {
     private readonly ISponsorService _service;
-
-    public SponsorController(ISponsorService service)
+    private readonly IMapper _mapper;
+    public SponsorController(ISponsorService service, IMapper mapper)
     {
         _service = service;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -21,8 +29,9 @@ public class SponsorController : ControllerBase
     {
         try
         {
-            var response = await _service.CreateAsync(request);
-            return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+            var sponsor = _mapper.Map<Sponsor>(request);
+            await _service.CreateAsync(sponsor);
+            return CreatedAtAction(nameof(GetById), new { id = sponsor.Id }, sponsor);
         }
         catch (InvalidOperationException ex)
         {
@@ -32,6 +41,7 @@ public class SponsorController : ControllerBase
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
+
     {
         var response = await _service.GetByIdAsync(id);
         if (response == null) return NotFound();
@@ -48,8 +58,8 @@ public class SponsorController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await _service.DeleteAsync(id);
-        if (!deleted) return NotFound();
+        await _service.DeleteAsync(id);
+        
         return NoContent(); // Retorna 204 si todo salió bien
     }
     [HttpPut("{id}")]
@@ -58,9 +68,8 @@ public class SponsorController : ControllerBase
         if (id != sponsor.Id) return BadRequest();
 
         // Aquí usamos el servicio que declaraste arriba
-        var result = await _service.UpdateAsync(id, sponsor);
-        if (!result) return NotFound();
-
+        await _service.UpdateAsync(id, sponsor);
+       
         return NoContent();
     }
 }

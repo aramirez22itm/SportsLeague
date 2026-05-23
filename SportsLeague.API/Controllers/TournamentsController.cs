@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsLeague.Domain.Entities;
-using SportsLeague.Domain.Interfaces;
+using SportsLeague.Domain.Interfaces.Repositories;
+using System;
+
+
 
 [Route("api/[controller]")]
 [ApiController]
@@ -16,7 +19,7 @@ public class TournamentsController : ControllerBase
     public async Task<IActionResult> Post(Tournament Tournament)
     {
         await _repo.CreateAsync(Tournament);
-        await _repo.SaveAsync();
+        
         return Ok(Tournament);
     }
     [HttpPut("{id}")]
@@ -24,7 +27,7 @@ public class TournamentsController : ControllerBase
     {
         if (id != tournament.Id) return BadRequest();
         _repo.UpdateAsync(tournament);
-        await _repo.SaveAsync();
+        
         return NoContent();
     }
 
@@ -34,7 +37,7 @@ public class TournamentsController : ControllerBase
         var entity = await _repo.GetByIdAsync(id);
         if (entity == null) return NotFound();
         await _repo.DeleteAsync(id);
-        await _repo.SaveAsync();
+       
         return NoContent();
     }
 }

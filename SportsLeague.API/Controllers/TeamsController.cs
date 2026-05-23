@@ -1,59 +1,89 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SportsLeague.API.DTOs.Request;
+using SportsLeague.API.DTOs.Response;
+using SportsLeague.Domain.Interfaces.Services;
 using SportsLeague.Domain.Entities;
-using SportsLeague.Domain.Interfaces;
 
 namespace SportsLeague.API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
-public class TeamsController : ControllerBase
+[Route("api/[controller]")]
+public class TeamController : ControllerBase
 {
-    private readonly IGenericRepository<Team> _repository;
+    private readonly ITeamService _teamService;
+    private readonly IMapper _mapper;
 
-    public TeamsController(IGenericRepository<Team> repository)
+    public TeamController(ITeamService teamService, IMapper mapper)
     {
-        _repository = repository;
+        _teamService = teamService;
+        _mapper = mapper;
     }
 
-    // GET: api/Teams (Obtener todos los equipos)
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Team>>> GetTeams()
+    public async Task<ActionResult<IEnumerable<TeamResponseDTO>>> GetAll()
     {
-        var teams = await _repository.GetAllAsync();
-        return Ok(teams);
+        var teams = await _teamService.GetAllAsync();
+        return Ok(_mapper.Map<IEnumerable<TeamResponseDTO>>(teams));
     }
 
-    // POST: api/Teams (Crear un nuevo equipo)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TeamResponseDTO>> GetById(int id)
+    {
+        var team = await _teamService.GetByIdAsync(id);
+        if (team == null)
+            return NotFound(new { message = $"Equipo con ID {id} no encontrado" });
+
+        return Ok(_mapper.Map<TeamResponseDTO>(team));
+    }
+
     [HttpPost]
-    public async Task<ActionResult<Team>> CreateTeam(Team team)
+    public async Task<ActionResult<TeamResponseDTO>> Create(TeamRequestDTO dto)
     {
-        await _repository.CreateAsync(team);
-        await _repository.SaveAsync();
-        return Ok(team);
-    }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteTeam(int id)
-    {
-        var team = await _repository.GetByIdAsync(id);
+        try
+        {
+            var team = _mapper.Map<Team>(dto);
+            var created = await _teamService.CreateAsync(team);
+            var response = _mapper.Map<TeamResponseDTO>(created);
 
-        // Si no existe el equipo con ese ID, avisamos
-        if (team == null) return NotFound();
-
-        _repository.DeleteAsync(id);
-        await _repository.SaveAsync();
-
-        return NoContent(); // Código 204: Borrado con éxito
+            return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, Team team)
+    public async Task<ActionResult> Update(int id, TeamRequestDTO dto)
     {
-        if (id != team.Id) return BadRequest();
-
-        _repository.UpdateAsync(team);
-        await _repository.SaveAsync();
-
-        return NoContent();
+        try
+        {
+            var team = _mapper.Map<Team>(dto);
+            await _teamService.UpdateAsync(id, team);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
     }
 
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        try
+        {
+            await _teamService.DeleteAsync(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+    }
 }

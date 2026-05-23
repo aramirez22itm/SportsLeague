@@ -1,8 +1,9 @@
 ﻿using SportsLeague.Domain.Entities;
+using SportsLeague.Domain.Services;
 
-namespace SportsLeague.Domain.Interfaces.Services
-{
-    public interface IRefereeService
+namespace SportsLeague.Domain.Interfaces.Services;
+
+public interface IRefereeService
     {
         Task<IEnumerable<Referee>> GetAllAsync();
         Task<Referee> GetByIdAsync(int id);
@@ -10,4 +11,3 @@ namespace SportsLeague.Domain.Interfaces.Services
         Task<bool> UpdateAsync(Referee entity);
         Task<bool> DeleteAsync(int id);
     }
-}

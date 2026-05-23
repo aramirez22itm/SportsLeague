@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SportsLeague.DataAccess;
+using SportsLeague.DataAccess.Context;
 
 #nullable disable
 
 namespace SportsLeague.DataAccess.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(LeagueDbContext))]
     [Migration("20260326012824_Fase3_Entidades")]
     partial class Fase3_Entidades
     {
