@@ -41,6 +41,7 @@ public class SponsorController : ControllerBase
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
+
     {
         var response = await _service.GetByIdAsync(id);
         if (response == null) return NotFound();
