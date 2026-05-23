@@ -17,6 +17,7 @@ namespace SportsLeague.Domain.Entities
         public string LastName { get; set; } = null!;
         public DateTime BirthDate { get; set; }
         public PlayerPosition Position { get; set; }
+        public int Number { get; set; }
 
         public int TeamId { get; set; }
         public Team Team { get; set; } = null!;

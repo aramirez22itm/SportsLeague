@@ -1,6 +1,8 @@
-﻿using System;
+﻿using SportsLeague.Domain.Enums;
+using System;
 using System.Collections.Generic;
-using SportsLeague.Domain.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace SportsLeague.Domain.Entities
 {
@@ -10,8 +12,11 @@ namespace SportsLeague.Domain.Entities
         public Tournament Tournament { get; set; } = null!;
 
         public int HomeTeamId { get; set; }
+
+        [NotMapped]
         public Team HomeTeam { get; set; } = null!;
 
+        [NotMapped]
         public int AwayTeamId { get; set; }
         public Team AwayTeam { get; set; } = null!;
 

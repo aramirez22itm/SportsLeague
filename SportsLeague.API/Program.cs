@@ -4,6 +4,7 @@ using SportsLeague.Domain.Interfaces.Services;
 using SportsLeague.DataAccess.Context;
 using SportsLeague.DataAccess.Repositories;
 using SportsLeague.Domain.Interfaces.Repositories;
+using SportsLeague.DataAccess.Seeders;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<LeagueDbContext>();
+    //await context.Database.MigrateAsync(); // Aplica las migraciones automáticamente
+    //await DataSeeder.SeedAsync(context);    // Ejecuta tu Seeder
+}
 
 if (app.Environment.IsDevelopment())
 {
